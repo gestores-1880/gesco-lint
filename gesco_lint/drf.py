@@ -72,9 +72,23 @@ def _assigns_none(node: ast.stmt) -> bool:
     return isinstance(node.value, ast.Constant) and node.value.value is None
 
 
+def _parents(*, tree: ast.AST) -> dict[ast.AST, ast.AST]:
+    return {child: parent for parent in ast.walk(tree) for child in ast.iter_child_nodes(parent)}
+
+
+def _is_whole_querydict(*, node: ast.Attribute, parents: dict[ast.AST, ast.AST]) -> bool:
+    parent = parents.get(node)
+    if isinstance(parent, ast.keyword):
+        return parent.arg == "data" and parent.value is node
+    if not isinstance(parent, ast.Call) or not parent.args:
+        return False
+    return parent.args[0] is node
+
+
 class DrfApiVisitor(ast.NodeVisitor):
-    def __init__(self, *, check_query_params: bool) -> None:
+    def __init__(self, *, check_query_params: bool, parents: dict[ast.AST, ast.AST] | None = None) -> None:
         self.check_query_params = check_query_params
+        self.parents = {} if parents is None else parents
         self.found: list[tuple[ast.AST, str]] = []
 
     def _add(self, *, node: ast.AST, message: str) -> None:
@@ -120,7 +134,11 @@ class DrfApiVisitor(ast.NodeVisitor):
         self.generic_visit(node)
 
     def visit_Attribute(self, node: ast.Attribute) -> None:
-        if self.check_query_params and node.attr == "query_params":
+        if (
+            self.check_query_params
+            and node.attr == "query_params"
+            and not _is_whole_querydict(node=node, parents=self.parents)
+        ):
             self._add(node=node, message=QUERY_PARAMS)
         self.generic_visit(node)
 
@@ -139,7 +157,10 @@ class DrfApiChecker:
 
     def run(self) -> Iterator[tuple[int, int, str, type]]:
         stem = Path(self.filename).stem
-        visitor = DrfApiVisitor(check_query_params=not any(module in stem for module in QUERY_PARAMS_ALLOWED_MODULES))
+        visitor = DrfApiVisitor(
+            check_query_params=not any(module in stem for module in QUERY_PARAMS_ALLOWED_MODULES),
+            parents=_parents(tree=self.tree),
+        )
         visitor.visit(self.tree)
         for node, message in visitor.found:
             yield node.lineno, node.col_offset, message, type(self)

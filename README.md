@@ -10,7 +10,7 @@ códigos `GES`.
 
 ```yaml
   - repo: https://github.com/gestores-1880/gesco-lint
-    rev: v0.1.0
+    rev: v0.1.1
     hooks:
       - id: gesco-lint
         files: ^backend/
@@ -33,7 +33,7 @@ Cuando el repo esté limpio, quita `--changed-only`.
 ## Uso desde la línea de comandos
 
 ```bash
-pip install "gesco-lint @ git+https://github.com/gestores-1880/gesco-lint@v0.1.0"
+pip install "gesco-lint @ git+https://github.com/gestores-1880/gesco-lint@v0.1.1"
 
 gesco-lint backend/                              # todo
 gesco-lint --diff-base origin/develop backend/   # solo lo cambiado respecto a develop
@@ -65,7 +65,7 @@ Cada código cita el default que incumple (`API-n`). La convención completa viv
 | Código | Default | Detecta |
 |--------|---------|---------|
 | `GES111` | API-1 CRUD con generics/mixins | `http_method_names` en una clase |
-| `GES121` | API-2 Filtros con django-filter | `query_params` fuera de módulos `filters` / `pagination` |
+| `GES121` | API-2 Filtros con django-filter | `query_params.get(...)` o `query_params[...]` fuera de `filters` / `pagination`. `Serializer(data=request.query_params)` no se marca |
 | `GES131` | API-3 Entrada con serializer | `request.data[...]` o `request.data.get(...)` |
 | `GES151` | API-5 Librería `validators` | Tabla de letras de control del DNI |
 | `GES171` | API-7 Sin literales HTTP | `status_code == 200`, `Response(status=201)` |

@@ -25,6 +25,25 @@ def test_query_params_en_vista():
     assert _violations(source=source) == [(3, "GES121")]
 
 
+def test_query_params_pasados_al_serializer_no_reporta():
+    source = """
+    def get(self, request):
+        filtros = DiarioFiltrosSerializer(data=request.query_params, context={"empresa": empresa})
+        otros = MayorFiltrosSerializer(self.request.query_params)
+    """
+    assert _violations(source=source) == []
+
+
+def test_query_params_por_clave_junto_al_serializer():
+    source = """
+    def get(self, request):
+        filtros = DiarioFiltrosSerializer(data=request.query_params, context={"empresa": empresa})
+        asiento = request.query_params.get("asiento")
+        estado = self.request.query_params["estado"]
+    """
+    assert _violations(source=source) == [(4, "GES121"), (5, "GES121")]
+
+
 def test_query_params_en_modulo_de_filtros_no_reporta():
     source = """
     def filter_queryset(self, request, queryset, view):
