@@ -1,0 +1,55 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gesco-lint"
+version = "0.1.0"
+description = "Linters de las convenciones de código de Gesco: plugin de flake8 (códigos GES) y hooks de pre-commit"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.10"
+keywords = ["flake8", "linter", "django", "djangorestframework", "pre-commit"]
+dependencies = ["flake8>=7"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Framework :: Django",
+    "Framework :: Flake8",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Quality Assurance",
+]
+
+[project.optional-dependencies]
+test = ["pytest>=8"]
+
+[project.urls]
+homepage = "https://github.com/gestores-1880/gesco-lint"
+
+[project.entry-points."flake8.extension"]
+GES1 = "gesco_lint.drf:DrfApiChecker"
+
+[project.scripts]
+gesco-lint = "gesco_lint.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["gesco_lint*"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "SIM", "S", "RUF"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101", "S603", "S607"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

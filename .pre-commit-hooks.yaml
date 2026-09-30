@@ -1,0 +1,6 @@
+- id: gesco-lint
+  name: gesco-lint
+  description: Convenciones de código de Gesco (plugin de flake8, códigos GES)
+  entry: gesco-lint
+  language: python
+  types: [python]
