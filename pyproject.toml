@@ -34,6 +34,7 @@ homepage = "https://github.com/gestores-1880/gesco-lint"
 
 [project.entry-points."flake8.extension"]
 GES1 = "gesco_lint.drf:DrfApiChecker"
+GES2 = "gesco_lint.models:DjangoModelsChecker"
 
 [project.scripts]
 gesco-lint = "gesco_lint.cli:main"

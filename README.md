@@ -76,9 +76,19 @@ Cada código cita el default que incumple (`API-n`). La convención completa viv
 API-4 (salida con serializer), API-6 (framework antes que mecanismos propios) y la carga de
 relaciones de API-8 no se detectan en el AST: se revisan en el plan y en la review.
 
+### GES2 — Modelos Django
+
+Cada código cita la rule de `agent-config` que incumple. No se aplican a ficheros bajo
+`migrations/` (ahí el esquema histórico copia los kwargs del campo).
+
+| Código | Rule | Detecta |
+|--------|------|---------|
+| `GES211` | `django-model-indexes` | `db_index=True` o `db_index=False` en un campo (`*Field` / `ForeignKey`) |
+| `GES221` | `django-models` | `unique=True` en un campo; la unicidad va en `Meta.constraints` con `UniqueConstraint` |
+
 ## Añadir un linter
 
-1. Una familia por dominio: `GES1` es DRF; la siguiente será `GES2`.
+1. Una familia por dominio: `GES1` es DRF; `GES2` es modelos; la siguiente será `GES3`.
 2. Módulo `gesco_lint/<familia>.py` con un checker de flake8 (`__init__(tree, filename)` + `run()`).
 3. Entry point en `pyproject.toml`, en `[project.entry-points."flake8.extension"]`.
 4. Tests en `tests/gesco_lint/test_<familia>.py`: uno que reporta y uno que no, por código.
