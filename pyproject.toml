@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "gesco-lint"
-version = "0.1.2"
+version = "0.1.3"
 description = "Linters de las convenciones de código de Gesco: plugin de flake8 (códigos GES) y hooks de pre-commit"
 readme = "README.md"
 license = {text = "MIT"}
