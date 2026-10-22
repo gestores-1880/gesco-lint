@@ -94,6 +94,7 @@ Cada código cita la rule de `agent-config` que incumple. Solo se aplican a fich
 | Código | Rule | Detecta |
 |--------|------|---------|
 | `GES311` | `django-migrations` | `RunPython(...)` sin keyword `elidable=` |
+| `GES321` | `django-migrations` | `from …models import …` (o equivalente) dentro de una función usada por `RunPython` |
 
 ## Añadir un linter
 
