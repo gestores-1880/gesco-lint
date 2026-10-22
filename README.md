@@ -86,9 +86,18 @@ Cada código cita la rule de `agent-config` que incumple. No se aplican a ficher
 | `GES211` | `django-model-indexes` | `db_index=True` o `db_index=False` en un campo (`*Field` / `ForeignKey`) |
 | `GES221` | `django-models` | `unique=True` en un campo; la unicidad va en `Meta.constraints` con `UniqueConstraint` |
 
+### GES3 — Migraciones Django
+
+Cada código cita la rule de `agent-config` que incumple. Solo se aplican a ficheros bajo
+`migrations/`.
+
+| Código | Rule | Detecta |
+|--------|------|---------|
+| `GES311` | `django-migrations` | `RunPython(...)` sin keyword `elidable=` |
+
 ## Añadir un linter
 
-1. Una familia por dominio: `GES1` es DRF; `GES2` es modelos; la siguiente será `GES3`.
+1. Una familia por dominio: `GES1` es DRF; `GES2` es modelos; `GES3` es migraciones; la siguiente será `GES4`.
 2. Módulo `gesco_lint/<familia>.py` con un checker de flake8 (`__init__(tree, filename)` + `run()`).
 3. Entry point en `pyproject.toml`, en `[project.entry-points."flake8.extension"]`.
 4. Tests en `tests/gesco_lint/test_<familia>.py`: uno que reporta y uno que no, por código.
