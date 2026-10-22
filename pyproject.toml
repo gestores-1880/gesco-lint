@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "gesco-lint"
-version = "0.1.2"
+version = "0.1.3"
 description = "Linters de las convenciones de código de Gesco: plugin de flake8 (códigos GES) y hooks de pre-commit"
 readme = "README.md"
 license = {text = "MIT"}
@@ -35,6 +35,7 @@ homepage = "https://github.com/gestores-1880/gesco-lint"
 [project.entry-points."flake8.extension"]
 GES1 = "gesco_lint.drf:DrfApiChecker"
 GES2 = "gesco_lint.models:DjangoModelsChecker"
+GES3 = "gesco_lint.migrations:DjangoMigrationsChecker"
 
 [project.scripts]
 gesco-lint = "gesco_lint.cli:main"
