@@ -13,9 +13,7 @@ RUNPYTHON_ELIDABLE = (
     "GES311 RunPython sin elidable=: pasa elidable=False "
     "(o True solo si es relleno elidable en squash) (django-migrations)"
 )
-RUNPYTHON_MODEL_IMPORT = (
-    "GES321 import de modelo real en RunPython: usa apps.get_model (django-migrations)"
-)
+RUNPYTHON_MODEL_IMPORT = "GES321 import de modelo real en RunPython: usa apps.get_model (django-migrations)"
 
 
 def _call_name(node: ast.Call) -> str:
